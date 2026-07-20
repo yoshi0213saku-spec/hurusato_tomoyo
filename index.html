@@ -90,14 +90,14 @@
 
     <div class="max-w-xl mx-auto px-4 py-6 md:py-10">
         
-        <!-- ヘッダーエリア（南相木中学同窓生特別仕様） -->
+        <!-- ヘッダーエリア（南相木中学同窓生特別仕様、総合案内ボタンは完全削除） -->
         <header class="text-center mb-6 fade-in">
             <div class="inline-flex items-center space-x-2 bg-green-50 border border-green-100 px-3.5 py-1.5 rounded-full mb-3 shadow-sm">
                 <span class="relative flex h-2 w-2">
                     <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                     <span class="relative inline-flex rounded-full h-2 w-2 bg-green-600"></span>
                 </span>
-                <span class="text-[9px] font-bold text-green-700 tracking-[0.2em] uppercase">MINAMIAIKI MEMORIAL v3.2</span>
+                <span class="text-[9px] font-bold text-green-700 tracking-[0.2em] uppercase">MINAMIAIKI MEMORIAL v3.5</span>
             </div>
             
             <div class="space-y-1">
@@ -256,6 +256,7 @@
             </section>
         </div>
 
+        <!-- キュレーター紹介 -->
         <div class="glass-card rounded-2xl p-6 text-center">
             <p class="text-[8px] text-green-600 uppercase tracking-[0.3em] mb-4 font-bold">Authorized Curator</p>
             
@@ -280,18 +281,18 @@
     </div>
 
     <script>
-        // 南相木中同窓生向け：思い出を呼び起こす5曲
+        // 南相木中同窓生向け：思い出を呼び起こす自作の5曲
         const tracks = [
             {
                 title: "ふるさとの友よ",
                 genre: "同窓の絆・望郷歌",
                 file: "./hurusatono_tomoyo.mp3",
-                image: "./omoide_1.jpg", // 指定いただいた画像
+                image: "./omoide_1.jpg", 
                 imageCaption: "南相木中同窓生の集い - 懐かしき学舎と変わらぬ友の笑顔",
                 tempo: 76,
                 passion: 99,
                 feeling: "同級生・学び舎",
-                coverColor: "#fae8ff", // 淡いマゼンタ
+                coverColor: "#fae8ff", 
                 textColor: "#a21caf",
                 color: { r: 162, g: 28, b: 175 },
                 insight: "60年の歳月を超えて心で繋がる同級生たちへの想いを綴った温かい名曲。イントロが流れた瞬間、あの日と同じ友の笑顔と木造校舎が鮮やかに蘇ります。"
@@ -300,12 +301,12 @@
                 title: "高原列車小海線",
                 genre: "旅情のひびき",
                 file: "./kougen_resya_koumisen.mp3",
-                image: "./kougen_resya_koumisen.png", // 小海線の画像を指定
+                image: "./kougen_resya_koumisen.png", 
                 imageCaption: "高原列車小海線 - 八ヶ岳高原をのんびりと走る懐かしのディーゼル車と澄み切った青空",
                 tempo: 110,
                 passion: 92,
                 feeling: "小海線・汽笛",
-                coverColor: "#e0f2fe", // 淡いブルー
+                coverColor: "#e0f2fe", 
                 textColor: "#0369a1",
                 color: { r: 3, g: 105, b: 161 },
                 insight: "高原をコトコトと走る小海線の軽快なリズム。窓を開けて吸い込んだ澄み切った信州の風、車窓から仰ぎ見た雄大な八ヶ岳の稜線が胸を熱くさせます。"
@@ -314,12 +315,12 @@
                 title: "南相木慕情",
                 genre: "郷愁 of バラード",
                 file: "./minamiaiki_bojyou.mp3",
-                image: "./minamiaiki_bojyo.png", // 南相木慕情の画像を設定
+                image: "./minamiaiki_bojyo.png", 
                 imageCaption: "南相木慕情 - 御座山の夕暮れに赤く染まりゆく南相木村の美しい里山と静謐なひととき",
                 tempo: 68,
                 passion: 98,
                 feeling: "御座山・夕暮れ",
-                coverColor: "#fef9c3", // 淡いゴールド
+                coverColor: "#fef9c3", 
                 textColor: "#a16207",
                 color: { r: 161, g: 98, b: 7 },
                 insight: "夕暮れ時に美しく茜色に染まる御座山と、しっとり響くせせらぎ。南相木の豊かな大地で過ごした青春の日々への愛おしさを、深いメロディーが包み込みます。"
@@ -328,12 +329,12 @@
                 title: "八ヶ岳しぐれ",
                 genre: "高原の哀愁歌",
                 file: "./yatugatake_shigure.mp3",
-                image: "",
-                imageCaption: "",
+                image: "./yatugatake_shigure.png", // 更新した画像名
+                imageCaption: "八ヶ岳しぐれ - 八ヶ岳の山肌を優しく濡らす通り雨と、静かに立ち込める幻想的な川霧",
                 tempo: 82,
                 passion: 95,
                 feeling: "八ヶ岳・通り雨",
-                coverColor: "#f3e8ff", // 淡いパープル
+                coverColor: "#f3e8ff", 
                 textColor: "#6b21a8",
                 color: { r: 107, g: 33, b: 168 },
                 insight: "八ヶ岳の峰々を優しく濡らすしぐれ雨。静寂に包まれる高原の森に、情感あふれる旋律がしみわたり、遠い日の甘酸っぱく切ない記憶を呼び起こします。"
@@ -347,7 +348,7 @@
                 tempo: 90,
                 passion: 89,
                 feeling: "レンゲツツジ・白樺",
-                coverColor: "#dcfce7", // 淡いグリーン
+                coverColor: "#dcfce7", 
                 textColor: "#15803d",
                 color: { r: 21, g: 128, b: 61 },
                 insight: "初夏になると白樺やカラマツの林を真っ赤に染め上げる２万株のレンゲツツジ。爽やかな高原アコーディオンを思わせる音色が、あの遊歩道を歩いた感覚を呼び戻します。"
@@ -392,6 +393,7 @@
 
         const playlistContainer = document.getElementById('playlist');
         
+        // プレイリストの構築
         tracks.forEach((track, idx) => {
             const el = document.createElement('div');
             el.id = `track-${idx}`;
@@ -401,7 +403,7 @@
             // ジャケット写真が用意されている場合は画像サムネイルを表示、ない場合はテキストにする
             const jacketHtml = track.image 
                 ? `<div class="w-10 h-10 rounded-full overflow-hidden shrink-0 shadow-sm border border-zinc-100 transition-all group-hover:scale-105">
-                     <img src="${track.image}" alt="" class="w-full h-full object-cover">
+                     <img src="${track.image}" alt="" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/40x40/f4f4f5/15803d?text=${encodeURIComponent(track.title.substring(0,2))}'">
                    </div>`
                 : `<div class="w-10 h-10 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0 shadow-sm border border-zinc-100 transition-all group-hover:scale-105" 
                         style="background-color: ${track.coverColor}; color: ${track.textColor};">
@@ -731,6 +733,11 @@
             }
             typeChar();
         }
+
+        // ウィンドウ読み込み完了時の初期化
+        window.onload = function() {
+            resizeCanvas();
+        };
     </script>
 </body>
 </html>
