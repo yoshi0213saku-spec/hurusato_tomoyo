@@ -124,7 +124,7 @@
                 </div>
             </div>
 
-            <!-- Canvas 本体（グリーンに映える内包デザイン） -->
+            <!-- Canvas 本体 -->
             <div class="relative bg-zinc-50/80 rounded-xl overflow-hidden border border-zinc-200/60 shadow-inner">
                 <canvas id="visualizer" class="w-full h-36 block"></canvas>
                 
@@ -139,7 +139,7 @@
                 </div>
             </div>
 
-            <!-- 曲に連動して表示される思い出の情景画像（omoide_1.jpg等に対応） -->
+            <!-- 曲に連動して表示される思い出の情景画像 -->
             <div id="landscape-photo-container" class="mt-3 relative rounded-xl overflow-hidden border border-zinc-200/60 shadow-xs h-48 bg-zinc-100 hidden transition-all duration-500">
                 <img id="landscape-photo" src="" alt="思い出の情景" class="w-full h-full object-cover">
                 <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/35 to-transparent p-3">
@@ -280,7 +280,7 @@
     </div>
 
     <script>
-        // 南相木中同窓生向け：思い出を呼び起こす5曲 (画像プロパティを追加)
+        // 南相木中同窓生向け：思い出を呼び起こす5曲
         const tracks = [
             {
                 title: "ふるさとの友よ",
@@ -314,8 +314,8 @@
                 title: "南相木慕情",
                 genre: "郷愁 of バラード",
                 file: "./minamiaiki_bojyou.mp3",
-                image: "",
-                imageCaption: "",
+                image: "./minamiaiki_bojyo.png", // 南相木慕情の画像を設定
+                imageCaption: "南相木慕情 - 御座山の夕暮れに赤く染まりゆく南相木村の美しい里山と静謐なひととき",
                 tempo: 68,
                 passion: 98,
                 feeling: "御座山・夕暮れ",
@@ -391,6 +391,7 @@
         const landscapePhotoCaption = document.getElementById('landscape-photo-caption');
 
         const playlistContainer = document.getElementById('playlist');
+        
         tracks.forEach((track, idx) => {
             const el = document.createElement('div');
             el.id = `track-${idx}`;
