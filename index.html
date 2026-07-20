@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ふるさとの友よ 音楽館 〜南相木中同窓生に贈る音の記憶〜</title>
+    <!-- Tailwind CSS と Google Fonts の読み込み -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@700;900&family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* 信州・南相木村の豊かな森、白樺、木漏れ日をイメージしたアース＆フォレストカラー */
+            --bg-color: #fafaf6; /* 温かみのある生成り色 */
+            --accent-green: #15803d; /* 御座山やカラマツの深緑 */
+            --accent-glow: rgba(21, 128, 61, 0.15);
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --text-dark: #27272a;
+            --text-muted: #71717a;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(21, 128, 61, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(132, 204, 22, 0.04) 0%, transparent 40%);
+            color: var(--text-dark);
+        }
+
+        .title-serif {
+            font-family: 'Noto Serif JP', serif;
+            font-weight: 900;
+            background: linear-gradient(135deg, #166534 0%, #15803d 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* 磨りガラス風の白カードデザイン（信州の澄んだ空気をイメージ） */
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 10px 30px -5px rgba(21, 128, 61, 0.06);
+        }
+
+        /* ボタンホバーエフェクト */
+        .glow-button {
+            box-shadow: 0 4px 14px var(--accent-glow);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glow-button:hover {
+            box-shadow: 0 6px 20px rgba(21, 128, 61, 0.3);
+            transform: translateY(-1px);
+        }
+
+        /* プレイリストのアクティブ曲強調 */
+        .track-active {
+            border: 1.5px solid var(--accent-green) !important;
+            background: rgba(21, 128, 61, 0.04) !important;
+            box-shadow: 0 4px 15px rgba(21, 128, 61, 0.06);
+        }
+
+        .fade-in {
+            animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* タイピングエフェクトのカーソル */
+        .cursor-effect::after {
+            content: '|';
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink {
+            from, to { color: transparent }
+            50% { color: var(--accent-green) }
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #d4d4d8; border-radius: 10px; }
+    </style>
+</head>
+<body class="min-h-screen pb-16">
+
+    <div class="max-w-xl mx-auto px-4 py-6 md:py-10">
+        
+        <!-- ヘッダーエリア（南相木中学同窓生特別仕様） -->
+        <header class="text-center mb-6 fade-in">
+            <div class="inline-flex items-center space-x-2 bg-green-50 border border-green-100 px-3.5 py-1.5 rounded-full mb-3 shadow-sm">
+                <span class="relative flex h-2 w-2">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-green-600"></span>
+                </span>
+                <span class="text-[9px] font-bold text-green-700 tracking-[0.2em] uppercase">MINAMIAIKI MEMORIAL v3.1</span>
+            </div>
+            
+            <div class="space-y-1">
+                <p class="text-[10px] tracking-[0.25em] font-extrabold text-zinc-400 uppercase">南相木を離れて六十余年、同級生と聴くふるさとの音</p>
+                <h1 class="text-xl md:text-2xl text-zinc-800 title-serif py-1 leading-snug">
+                    ふるさとの友よ 音楽館
+                </h1>
+                <p class="text-[9px] text-zinc-400 tracking-wider">〜南相木中同窓生に贈る音の記憶〜</p>
+            </div>
+        </header>
+
+        <div class="glass-card rounded-2xl p-4 mb-6 relative overflow-hidden">
+            <!-- コントロールヘッダー -->
+            <div class="flex items-center justify-between mb-3 text-[10px] font-bold tracking-wider text-zinc-500 z-10 relative">
+                <div class="flex items-center space-x-2">
+                    <span class="inline-block w-2 h-2 rounded-full bg-emerald-600 animate-pulse" id="status-dot"></span>
+                    <span id="player-status-text" class="font-mono text-zinc-600">SYSTEM: READY</span>
+                </div>
+                <div class="flex space-x-1" id="vis-modes">
+                    <button onclick="setVisMode('bars')" id="btn-mode-bars" class="px-2.5 py-1 rounded-md bg-green-100 text-green-800 font-bold transition-all border border-green-200">BARS</button>
+                    <button onclick="setVisMode('wave')" id="btn-mode-wave" class="px-2.5 py-1 rounded-md bg-white text-zinc-500 hover:bg-zinc-50 transition-all border border-zinc-200/60">WAVE</button>
+                    <button onclick="setVisMode('circle')" id="btn-mode-circle" class="px-2.5 py-1 rounded-md bg-white text-zinc-500 hover:bg-zinc-50 transition-all border border-zinc-200/60">ORBIT</button>
+                </div>
+            </div>
+
+            <!-- Canvas 本体（グリーンに映える内包デザイン） -->
+            <div class="relative bg-zinc-50/80 rounded-xl overflow-hidden border border-zinc-200/60 shadow-inner">
+                <canvas id="visualizer" class="w-full h-40 block"></canvas>
+                
+                <!-- 再生前のタップ誘導オーバーレイ -->
+                <div id="canvas-overlay" class="absolute inset-0 flex flex-col items-center justify-center bg-white/70 backdrop-blur-xs transition-opacity duration-500 pointer-events-none">
+                    <div class="w-11 h-11 rounded-full border border-green-200 flex items-center justify-center bg-white text-green-700 shadow-md animate-bounce mb-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                        </svg>
+                    </div>
+                    <span class="text-[10px] text-green-700 tracking-widest font-bold">下のふるさとの曲をタップして再生</span>
+                </div>
+            </div>
+
+            <!-- 音楽コントローラー -->
+            <div class="mt-4 space-y-3 z-10 relative">
+                <audio id="main-audio" crossorigin="anonymous" class="hidden"></audio>
+                
+                <div class="flex items-center justify-between">
+                    <!-- 曲名表示エリア -->
+                    <div class="truncate max-w-[65%]">
+                        <div id="playing-title" class="text-sm font-bold text-zinc-800 truncate">未選択</div>
+                        <div id="playing-genre" class="text-[9px] font-black text-green-600 tracking-wider uppercase mt-0.5">MEMORIES: -</div>
+                    </div>
+                    <!-- 再生コントロールボタン -->
+                    <div class="flex items-center space-x-3 shrink-0">
+                        <button id="play-pause-btn" onclick="togglePlay()" class="w-10 h-10 rounded-full bg-green-700 flex items-center justify-center text-white font-bold glow-button disabled:opacity-50" disabled>
+                            <svg id="play-icon" class="h-5 w-5 ml-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" /></svg>
+                            <svg id="pause-icon" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 9v6m4-6v6" /></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- カスタムシークバー -->
+                <div class="flex items-center space-x-2 text-[9px] font-mono text-zinc-500">
+                    <span id="current-time">0:00</span>
+                    <div class="flex-1 h-1.5 bg-zinc-200 rounded-full overflow-hidden relative cursor-pointer" id="progress-container" onclick="seekAudio(event)">
+                        <div id="progress-bar" class="h-full bg-gradient-to-r from-green-600 to-lime-500 rounded-full w-0 transition-all duration-100"></div>
+                    </div>
+                    <span id="duration-time">0:00</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="ai-insight-panel" class="glass-card rounded-2xl p-5 mb-6 border border-green-100 relative overflow-hidden bg-gradient-to-br from-white via-green-50/20 to-white">
+            <div class="absolute top-0 right-0 p-3 opacity-[0.03] pointer-events-none">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-green-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                </svg>
+            </div>
+            <div class="flex items-center space-x-2 mb-3">
+                <span class="inline-block w-2 h-2 rounded-full bg-green-600 animate-pulse"></span>
+                <span class="text-[9px] font-bold uppercase tracking-[0.2em] text-green-700">MEMORIES ANALYSIS (あの頃の風景解析)</span>
+            </div>
+            <!-- 南相木の楽曲に合わせたリアルタイム指標 -->
+            <div class="flex flex-wrap gap-2 mb-3 font-mono text-[8.5px] text-zinc-600">
+                <span class="bg-green-100/60 border border-green-200/60 px-2 py-0.5 rounded-md text-green-800 font-bold" id="ai-stat-tempo">TEMPO: -- BPM</span>
+                <span class="bg-green-100/60 border border-green-200/60 px-2 py-0.5 rounded-md text-green-800 font-bold" id="ai-stat-passion">NOSTALGIA: --%</span>
+                <span class="bg-green-100/60 border border-green-200/60 px-2 py-0.5 rounded-md text-green-800 font-bold" id="ai-stat-feeling">SCENE: UNKNOWN</span>
+            </div>
+            <p id="ai-insight-text" class="text-xs leading-relaxed font-medium text-zinc-700 cursor-effect">楽曲を選択すると、その曲が描き出す南相木村の美しく懐かしい情景解説が始動します。</p>
+        </div>
+
+        <div class="space-y-3 mb-6">
+            <h3 class="text-[10px] font-bold text-zinc-500 uppercase tracking-[0.2em]">ふるさとの思い出トラック (全5曲)</h3>
+
+            <div class="space-y-2.5" id="playlist">
+                <!-- JavaScriptで楽曲を動的生成 -->
+            </div>
+        </div>
+
+        <div class="glass-card rounded-2xl p-5 mb-6">
+            <section class="mb-4">
+                <h2 class="text-[9px] font-bold text-green-700 uppercase tracking-[0.2em] mb-1">Our Beloved Hometown</h2>
+                <h3 class="text-sm font-bold text-zinc-800 mb-1.5">ふるさと、信州・南相木村に想いを寄せて</h3>
+                <p class="text-xs text-zinc-600 leading-relaxed">
+                    この音楽帖は、昭和30年代に南相木中を卒業し、故郷を離れてから60年以上が経った同級生の皆さまへ向けて企画されました。毎日見上げた凛々しい「御座山」、水しぶきを上げた「おみかの滝」や「犬ころの滝」、初夏に赤く染まった「立原高原」、そして静かな「立岩湖」……。目を閉じて音を聴けば、あの澄み切った信州の風が、友と共に過ごした懐かしい日々が、いつでも鮮やかに心に蘇ります。
+                </p>
+            </section>
+            
+            <hr class="border-zinc-200 my-4">
+
+            <!-- 南相木の自然美カテゴリー -->
+            <section>
+                <div class="flex items-center justify-between mb-3">
+                    <h2 class="text-[9px] font-bold text-zinc-400 uppercase tracking-[0.25em]">Hometown Landmarks</h2>
+                    <span class="text-[8px] text-green-600 font-bold">7 Beautiful Spots</span>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div class="p-2.5 bg-white/50 rounded-xl border border-zinc-200/40">
+                        <h4 class="text-xs font-bold text-green-800 mb-0.5">御座山 (おぐらさん)</h4>
+                        <p class="text-[9px] text-zinc-500 leading-snug">南相木のシンボル。どこからでも見える優美な頂きは、私たちの誇り。</p>
+                    </div>
+                    <div class="p-2.5 bg-white/50 rounded-xl border border-zinc-200/40">
+                        <h4 class="text-xs font-bold text-green-800 mb-0.5">おみかの滝</h4>
+                        <p class="text-[9px] text-zinc-500 leading-snug">3つの滝壺からなる名勝。激しくも厳かな流れは今も変わりません。</p>
+                    </div>
+                    <div class="p-2.5 bg-white/50 rounded-xl border border-zinc-200/40">
+                        <h4 class="text-xs font-bold text-green-800 mb-0.5">立原高原</h4>
+                        <p class="text-[9px] text-zinc-500 leading-snug">白樺とカラマツの林。初夏には２万株のレンゲツツジが赤く咲き誇ります。</p>
+                    </div>
+                    <div class="p-2.5 bg-white/50 rounded-xl border border-zinc-200/40">
+                        <h4 class="text-xs font-bold text-green-800 mb-0.5">星降る夜空</h4>
+                        <p class="text-[9px] text-zinc-500 leading-snug">静まり返った澄んだ空気の中に広がる、言葉を失うほどの満天の星。</p>
+                    </div>
+                    <div class="p-2.5 bg-white/50 rounded-xl border border-zinc-200/40">
+                        <h4 class="text-xs font-bold text-green-800 mb-0.5">立岩湖 (たていわこ)</h4>
+                        <p class="text-[9px] text-zinc-500 leading-snug">シナノユキマスが泳ぐ、山懐に抱かれた静かな静寂の湖面。</p>
+                    </div>
+                    <div class="p-2.5 bg-white/50 rounded-xl border border-zinc-200/40">
+                        <h4 class="text-xs font-bold text-green-800 mb-0.5">昭和の木造校舎</h4>
+                        <p class="text-[9px] text-zinc-500 leading-snug">ストーブの匂い、廊下のきしむ音、放課後に響いたみんなの笑い声。</p>
+                    </div>
+                    <div class="p-2.5 bg-white/50 rounded-xl border border-zinc-200/40 col-span-2">
+                        <h4 class="text-xs font-bold text-green-800 mb-0.5">犬ころの滝 ＆ 滝見の湯</h4>
+                        <p class="text-[9px] text-zinc-500 leading-snug">苔むした岩場を流れ落ちる美しい滝と、今では名物となった温泉のせせらぎ。南相木の豊かな水が育む癒しの光景です。</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div class="glass-card rounded-2xl p-6 text-center">
+            <p class="text-[8px] text-green-600 uppercase tracking-[0.3em] mb-4 font-bold">Authorized Curator</p>
+            
+            <!-- 円形のキュレーターアイコン -->
+            <div class="relative w-20 h-20 mx-auto mb-3 rounded-full p-0.5 bg-gradient-to-tr from-green-600 to-lime-500 shadow-md">
+                <div class="w-full h-full rounded-full overflow-hidden bg-white flex items-center justify-center">
+                    <img id="curator-image" src="./aikon-sita1.png" alt="中島 義健" class="w-full h-full object-cover" onerror="this.onerror=null; this.parentNode.innerHTML='<svg class=\'w-8 h-8 text-green-600\' fill=\'currentColor\' viewBox=\'0 0 24 24\'><path d=\'M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z\'/></svg>'">
+                </div>
+            </div>
+
+            <h4 class="text-base font-bold text-zinc-800">中島 義健</h4>
+            <p class="text-[10px] text-green-700 font-bold mb-3">AI音楽解析・南相木文化アーカイブ担当</p>
+            <a href="mailto:yoshi0213@gmail.com" class="text-[11px] text-zinc-600 font-mono bg-zinc-100 hover:bg-green-50 hover:text-green-700 py-1.5 px-4 rounded-xl inline-block border border-zinc-200/80 transition-all">
+                yoshi0213@gmail.com
+            </a>
+        </div>
+
+        <!-- フッター -->
+        <footer class="mt-12 text-center text-zinc-400 text-[8px] tracking-[0.4em] uppercase font-bold">
+            &copy; 2024-2026 Minamiaiki Middle School Alumni Memory Project
+        </footer>
+    </div>
+
+    <script>
+        // 南相木中同窓生向け：ふるさとの思い出を呼び起こす5曲
+        const tracks = [
+            {
+                title: "ふるさとの友よ",
+                genre: "同窓の絆・望郷歌",
+                file: "./hurusatono_tomoyo.mp3",
+                tempo: 76,
+                passion: 99,
+                feeling: "同級生・学び舎",
+                coverColor: "#fae8ff", // 淡いマゼンタ
+                textColor: "#a21caf",
+                color: { r: 162, g: 28, b: 175 },
+                insight: "60年の歳月を超えて心で繋がる同級生たちへの想いを綴った温かい名曲。イントロが流れた瞬間、あの日と同じ友の笑顔と木造校舎が鮮やかに蘇ります。"
+            },
+            {
+                title: "高原列車小海線",
+                genre: "旅情のひびき",
+                file: "./kougen_resya_koumisen.mp3",
+                tempo: 110,
+                passion: 92,
+                feeling: "小海線・汽笛",
+                coverColor: "#e0f2fe", // 淡いブルー
+                textColor: "#0369a1",
+                color: { r: 3, g: 105, b: 161 },
+                insight: "高原をコトコトと走る小海線の軽快なリズム。窓を開けて吸い込んだ澄み切った信州の風、車窓から仰ぎ見た雄大な八ヶ岳の稜線が胸を熱くさせます。"
+            },
+            {
+                title: "南相木慕情",
+                genre: "郷愁のバラード",
+                file: "./minamiaiki_bojyou.mp3",
+                tempo: 68,
+                passion: 98,
+                feeling: "御座山・夕暮れ",
+                coverColor: "#fef9c3", // 淡いゴールド
+                textColor: "#a16207",
+                color: { r: 161, g: 98, b: 7 },
+                insight: "夕暮れ時に美しく茜色に染まる御座山と、しっとり響くせせらぎ。南相木の豊かな大地で過ごした青春の日々への愛おしさを、深いメロディーが包み込みます。"
+            },
+            {
+                title: "八ヶ岳しぐれ",
+                genre: "高原の哀愁歌",
+                file: "./yatugatake_shigure.mp3",
+                tempo: 82,
+                passion: 95,
+                feeling: "八ヶ岳・通り雨",
+                coverColor: "#f3e8ff", // 淡いパープル
+                textColor: "#6b21a8",
+                color: { r: 107, g: 33, b: 168 },
+                insight: "八ヶ岳の峰々を優しく濡らすしぐれ雨。静寂に包まれる高原の森に、情感あふれる旋律がしみわたり、遠い日の甘酸っぱく切ない記憶を呼び起こします。"
+            },
+            {
+                title: "立原高原",
+                genre: "初夏のささやき",
+                file: "./tatehara_kougen.mp3",
+                tempo: 90,
+                passion: 89,
+                feeling: "レンゲツツジ・白樺",
+                coverColor: "#dcfce7", // 淡いグリーン
+                textColor: "#15803d",
+                color: { r: 21, g: 128, b: 61 },
+                insight: "初夏になると白樺やカラマツの林を真っ赤に染め上げる２万株のレンゲツツジ。爽やかな高原アコーディオンを思わせる音色が、あの遊歩道を歩いた感覚を呼び戻します。"
+            }
+        ];
+
+        // 状態管理
+        let activeTrackIndex = null;
+        let isPlaying = false;
+        let visMode = 'bars'; // bars | wave | circle
+        let audioContext = null;
+        let analyser = null;
+        let dataArray = null;
+        let source = null;
+        let typingTimeout = null;
+
+        // シミュレーター（オフライン・代替再生用の滑らかな波形）
+        let simFreqs = Array(32).fill(0).map(() => Math.random() * 50);
+        let simWavePhase = 0;
+        let pulseAngle = 0;
+
+        // DOM要素の取得
+        const canvas = document.getElementById('visualizer');
+        const ctx = canvas.getContext('2d');
+        const mainAudio = document.getElementById('main-audio');
+        const playPauseBtn = document.getElementById('play-pause-btn');
+        const playIcon = document.getElementById('play-icon');
+        const pauseIcon = document.getElementById('pause-icon');
+        const playingTitle = document.getElementById('playing-title');
+        const playingGenre = document.getElementById('playing-genre');
+        const durationTime = document.getElementById('duration-time');
+        const currentTime = document.getElementById('current-time');
+        const progressBar = document.getElementById('progress-bar');
+        const progressContainer = document.getElementById('progress-container');
+        const statusDot = document.getElementById('status-dot');
+        const playerStatusText = document.getElementById('player-status-text');
+
+        const playlistContainer = document.getElementById('playlist');
+        tracks.forEach((track, idx) => {
+            const el = document.createElement('div');
+            el.id = `track-${idx}`;
+            el.className = "group cursor-pointer p-3.5 rounded-xl border border-zinc-200 bg-white/70 hover:border-green-300 hover:bg-green-50/40 active:scale-[0.99] transition-all duration-200 flex items-center justify-between shadow-xs";
+            el.onclick = () => selectTrack(idx);
+            el.innerHTML = `
+                <div class="flex items-center space-x-3 truncate">
+                    <!-- ふるさとのイメージアート（丸型プレースホルダー） -->
+                    <div class="w-10 h-10 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0 shadow-sm border border-zinc-100 transition-all group-hover:scale-105" 
+                         style="background-color: ${track.coverColor}; color: ${track.textColor};">
+                        <span>${track.feeling.substring(0, 2)}</span>
+                    </div>
+                    <div class="truncate">
+                        <h4 class="text-xs font-bold text-zinc-800 group-hover:text-green-700 transition-colors">${track.title}</h4>
+                        <p class="text-[9.5px] text-zinc-400 font-semibold tracking-wide mt-0.5">${track.genre} • 心象風景</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-2 shrink-0">
+                    <div class="w-1.5 h-1.5 rounded-full bg-transparent" id="status-light-${idx}"></div>
+                    <span class="text-[9px] text-green-700 font-extrabold bg-green-50 border border-green-100 px-2 py-0.5 rounded-full group-hover:bg-green-100 transition-colors">聴く</span>
+                </div>
+            `;
+            playlistContainer.appendChild(el);
+        });
+
+        function resizeCanvas() {
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * window.devicePixelRatio;
+            canvas.height = rect.height * window.devicePixelRatio;
+            ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            const w = canvas.width / window.devicePixelRatio;
+            const h = canvas.height / window.devicePixelRatio;
+            
+            // 温かい背景に合わせて綺麗にフェードアウト
+            ctx.fillStyle = 'rgba(250, 250, 246, 0.25)';
+            ctx.fillRect(0, 0, w, h);
+
+            const currentTrack = activeTrackIndex !== null ? tracks[activeTrackIndex] : null;
+            const trackColor = currentTrack ? currentTrack.color : { r: 21, g: 128, b: 61 };
+            const speedMultiplier = currentTrack ? (currentTrack.tempo / 100) : 1.0;
+
+            let visualArray = Array(32).fill(0);
+
+            if (isPlaying) {
+                if (analyser) {
+                    analyser.getByteFrequencyData(dataArray);
+                    for (let i = 0; i < 32; i++) {
+                        visualArray[i] = dataArray[i * 4] || 0;
+                    }
+                } else {
+                    // 音声ファイルがなくても、ふるさとの歌のパラメーターに連動して波形を模擬生成
+                    simWavePhase += 0.08 * speedMultiplier;
+                    pulseAngle += 0.05 * speedMultiplier;
+                    for (let i = 0; i < 32; i++) {
+                        const pulse = Math.sin(simWavePhase + i * 0.3) * 35;
+                        const dynamicSpark = Math.sin(pulseAngle * 1.5 + i * 0.5) > 0.4 ? (Math.random() * 50) : 0;
+                        simFreqs[i] = Math.max(10, Math.min(220, simFreqs[i] * 0.8 + (45 + pulse + dynamicSpark) * 0.2));
+                        visualArray[i] = simFreqs[i];
+                    }
+                }
+            } else {
+                // 静穏時のカラマツの葉が優しくそよぐようなウェーブ
+                simWavePhase += 0.015;
+                for (let i = 0; i < 32; i++) {
+                    const wave = Math.sin(simWavePhase + i * 0.2) * 12 + 12;
+                    simFreqs[i] = simFreqs[i] * 0.9 + wave * 0.1;
+                    visualArray[i] = simFreqs[i];
+                }
+            }
+
+            if (visMode === 'bars') {
+                // イコライザーバー
+                const barWidth = (w - 10) / 32;
+                for (let i = 0; i < 32; i++) {
+                    const normalizedVal = visualArray[i] / 255;
+                    const barHeight = normalizedVal * (h - 35);
+                    const x = 5 + i * barWidth;
+                    const y = h - barHeight - 10;
+
+                    const gradient = ctx.createLinearGradient(x, y, x, h);
+                    gradient.addColorStop(0, `rgba(${trackColor.r}, ${trackColor.g}, ${trackColor.b}, 0.9)`);
+                    gradient.addColorStop(0.5, `rgba(${trackColor.r}, ${trackColor.g}, ${trackColor.b}, 0.4)`);
+                    gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+
+                    ctx.fillStyle = gradient;
+                    ctx.beginPath();
+                    ctx.roundRect(x + 1.5, y, barWidth - 3, barHeight, [3, 3, 0, 0]);
+                    ctx.fill();
+
+                    // ピークドット（光の雫）
+                    ctx.fillStyle = `rgba(${trackColor.r}, ${trackColor.g}, ${trackColor.b}, 1)`;
+                    ctx.fillRect(x + 1.5, Math.max(5, y - 3), barWidth - 3, 2);
+                }
+            } else if (visMode === 'wave') {
+                // 相木川のせせらぎオシロスコープ
+                ctx.beginPath();
+                ctx.strokeStyle = `rgba(${trackColor.r}, ${trackColor.g}, ${trackColor.b}, 0.85)`;
+                ctx.lineWidth = 3.5;
+                
+                const sliceWidth = w / 32;
+                let x = 0;
+
+                for (let i = 0; i < 32; i++) {
+                    const normalizedVal = visualArray[i] / 255;
+                    const offset = normalizedVal * h * 0.45;
+                    const y = h / 2 + (i % 2 === 0 ? offset : -offset);
+
+                    if (i === 0) {
+                        ctx.moveTo(x, y);
+                    } else {
+                        const xc = x + sliceWidth / 2;
+                        const yc = (ctx.currentY || h/2) + (y - (ctx.currentY || h/2)) / 2;
+                        ctx.quadraticCurveTo(x - sliceWidth/2, ctx.currentY || h/2, xc, yc);
+                    }
+                    ctx.currentY = y;
+                    x += sliceWidth;
+                }
+                ctx.lineTo(w, h / 2);
+                ctx.stroke();
+            } else if (visMode === 'circle') {
+                // 御座山を巡る星空の軌道（オービット）
+                const cx = w / 2;
+                const cy = h / 2;
+                const baseRadius = 30;
+                
+                let totalEnergy = visualArray.reduce((acc, v) => acc + v, 0) / 32;
+                let scale = 1 + (totalEnergy / 255) * 0.4;
+                
+                ctx.beginPath();
+                ctx.arc(cx, cy, baseRadius * scale, 0, Math.PI * 2);
+                ctx.strokeStyle = `rgba(${trackColor.r}, ${trackColor.g}, ${trackColor.b}, 0.25)`;
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+
+                for (let i = 0; i < 32; i++) {
+                    const angle = (i / 32) * Math.PI * 2 + simWavePhase * 0.1;
+                    const norm = visualArray[i] / 255;
+                    const spikeLen = norm * 40 + 5;
+                    
+                    const startX = cx + Math.cos(angle) * (baseRadius * scale);
+                    const startY = cy + Math.sin(angle) * (baseRadius * scale);
+                    const endX = cx + Math.cos(angle) * (baseRadius * scale + spikeLen);
+                    const endY = cy + Math.sin(angle) * (baseRadius * scale + spikeLen);
+
+                    ctx.beginPath();
+                    ctx.moveTo(startX, startY);
+                    ctx.lineTo(endX, endY);
+                    ctx.strokeStyle = `rgba(${trackColor.r}, ${trackColor.g}, ${trackColor.b}, ${0.5 + norm * 0.5})`;
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                }
+            }
+
+            // 背景の薄い木漏れ日グリッド線
+            ctx.strokeStyle = 'rgba(21, 128, 61, 0.015)';
+            ctx.lineWidth = 1;
+            for (let i = 20; i < w; i += 20) {
+                ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, h); ctx.stroke();
+            }
+            for (let j = 20; j < h; j += 20) {
+                ctx.beginPath(); ctx.moveTo(0, j); ctx.lineTo(w, j); ctx.stroke();
+            }
+        }
+        animate();
+
+        // ビジュアライザー切り替え
+        function setVisMode(mode) {
+            visMode = mode;
+            document.querySelectorAll('#vis-modes button').forEach(b => {
+                b.className = "px-2.5 py-1 rounded-md bg-white text-zinc-500 hover:bg-zinc-50 border border-zinc-200/60";
+            });
+            const activeBtn = document.getElementById(`btn-mode-${mode}`);
+            if (activeBtn) {
+                activeBtn.className = "px-2.5 py-1 rounded-md bg-green-100 text-green-800 font-bold border border-green-200";
+            }
+        }
+
+        function initAudioEngine() {
+            if (audioContext) return;
+            try {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                analyser = audioContext.createAnalyser();
+                analyser.fftSize = 256;
+                const bufferLength = analyser.frequencyBinCount;
+                dataArray = new Uint8Array(bufferLength);
+
+                source = audioContext.createMediaElementSource(mainAudio);
+                source.connect(analyser);
+                analyser.connect(audioContext.destination);
+            } catch(e) {
+                console.warn("AudioContext init bypassed for web permissions. Simulator fallback active.", e);
+            }
+        }
+
+        function selectTrack(index) {
+            initAudioEngine();
+            if (audioContext && audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+
+            // 導入の案内を非表示に
+            document.getElementById('canvas-overlay').classList.add('opacity-0');
+
+            activeTrackIndex = index;
+            const track = tracks[index];
+
+            // 選択中の曲のリストを目立たせる
+            document.querySelectorAll('#playlist > div').forEach((el, idx) => {
+                el.classList.remove('track-active');
+                const light = document.getElementById(`status-light-${idx}`);
+                if (light) {
+                    light.className = "w-1.5 h-1.5 rounded-full bg-transparent";
+                }
+            });
+            
+            const activeEl = document.getElementById(`track-${index}`);
+            if (activeEl) {
+                activeEl.classList.add('track-active');
+                const light = document.getElementById(`status-light-${index}`);
+                if (light) {
+                    light.className = "w-1.5 h-1.5 rounded-full bg-green-600 animate-pulse";
+                }
+            }
+
+            // オーディオ読み込み
+            mainAudio.src = track.file;
+            playingTitle.innerText = track.title;
+            playingGenre.innerText = `MEMORIES: ${track.genre}`;
+            
+            // 色彩を曲のイメージに連動
+            document.documentElement.style.setProperty('--accent-green', `rgb(${track.color.r}, ${track.color.g}, ${track.color.b})`);
+            document.documentElement.style.setProperty('--accent-glow', `rgba(${track.color.r}, ${track.color.g}, ${track.color.b}, 0.25)`);
+
+            playPauseBtn.disabled = false;
+            statusDot.className = "inline-block w-2 h-2 rounded-full bg-green-600 animate-pulse";
+            playerStatusText.innerText = "TUNING: CONNECTED";
+
+            mainAudio.play().then(() => {
+                isPlaying = true;
+                updateButtonState(true);
+                playerStatusText.innerText = `MEMORIES: ${track.genre}`;
+            }).catch(e => {
+                console.warn("Simulation playback running gracefully.");
+                isPlaying = true; 
+                updateButtonState(true);
+                playerStatusText.innerText = `PREVIEW: ${track.feeling}`;
+            });
+
+            // 解説コンソールのタイピング更新
+            updateAIConsole(track);
+        }
+
+        // 再生・一時停止のトグル
+        function togglePlay() {
+            if (activeTrackIndex === null) return;
+            if (isPlaying) {
+                mainAudio.pause();
+                isPlaying = false;
+                updateButtonState(false);
+                playerStatusText.innerText = "SYSTEM: PAUSED";
+            } else {
+                if (audioContext && audioContext.state === 'suspended') {
+                    audioContext.resume();
+                }
+                mainAudio.play().then(() => {
+                    isPlaying = true;
+                    updateButtonState(true);
+                    playerStatusText.innerText = `MEMORIES: ${tracks[activeTrackIndex].genre}`;
+                }).catch(() => {
+                    isPlaying = true; 
+                    updateButtonState(true);
+                    playerStatusText.innerText = "PREVIEW MODE";
+                });
+            }
+        }
+
+        function updateButtonState(playing) {
+            if (playing) {
+                playIcon.classList.add('hidden');
+                pauseIcon.classList.remove('hidden');
+            } else {
+                playIcon.classList.remove('hidden');
+                pauseIcon.classList.add('hidden');
+            }
+        }
+
+        // シークバー制御
+        function seekAudio(event) {
+            if (activeTrackIndex === null || !mainAudio.duration) return;
+            const rect = progressContainer.getBoundingClientRect();
+            const clickX = event.clientX - rect.left;
+            const percent = clickX / rect.width;
+            mainAudio.currentTime = percent * mainAudio.duration;
+        }
+
+        // シーク進捗の同調
+        mainAudio.addEventListener('timeupdate', () => {
+            if (!mainAudio.duration) return;
+            const cur = mainAudio.currentTime;
+            const dur = mainAudio.duration;
+            const pct = (cur / dur) * 100;
+            progressBar.style.width = `${pct}%`;
+            
+            currentTime.innerText = formatTime(cur);
+            durationTime.innerText = formatTime(dur);
+        });
+
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return "0:00";
+            const m = Math.floor(seconds / 60);
+            const s = Math.floor(seconds % 60);
+            return `${m}:${s < 10 ? '0' : ''}${s}`;
+        }
+
+        // タイピング解説効果の更新
+        function updateAIConsole(track) {
+            document.getElementById('ai-stat-tempo').innerText = `TEMPO: ${track.tempo} BPM`;
+            document.getElementById('ai-stat-passion').innerText = `NOSTALGIA: ${track.passion}%`;
+            document.getElementById('ai-stat-feeling').innerText = `SCENE: ${track.feeling}`;
+
+            const textElement = document.getElementById('ai-insight-text');
+            textElement.innerText = "";
+            clearTimeout(typingTimeout);
+
+            let charIdx = 0;
+            const fullText = track.insight;
+            
+            function typeChar() {
+                if (charIdx < fullText.length) {
+                    textElement.innerText += fullText.charAt(charIdx);
+                    charIdx++;
+                    typingTimeout = setTimeout(typeChar, 30);
+                }
+            }
+            typeChar();
+        }
+    </script>
+</body>
+</html>
