@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ふるさとの友よ 音楽館 ～懐かしい風景と大切な人を想う音楽の記憶～</title>
+    <!-- Tailwind CSS と Google Fonts の読み込み -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@700;900&family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* 信州・南相木村の豊かな森、白樺、木漏れ日をイメージしたアース＆フォレストカラー */
+            --bg-color: #fafaf6; /* 温かみのある生成り色 */
+            --accent-green: #15803d; /* 御座山やカラマツの深緑 */
+            --accent-glow: rgba(21, 128, 61, 0.15);
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --text-dark: #27272a;
+            --text-muted: #71717a;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(21, 128, 61, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(132, 204, 22, 0.04) 0%, transparent 40%);
+            color: var(--text-dark);
+        }
+
+        .title-serif {
+            font-family: 'Noto Serif JP', serif;
+            font-weight: 900;
+            background: linear-gradient(135deg, #166534 0%, #15803d 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* 磨りガラス風の白カードデザイン */
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 10px 30px -5px rgba(21, 128, 61, 0.06);
+        }
+
+        /* 温かみのある案内カード */
+        .welcome-card {
+            background: #fffdf9;
+            border: 1.5px solid #fef3c7;
+            box-shadow: 0 8px 24px -4px rgba(217, 119, 6, 0.05);
+        }
+
+        /* プレイリストのアクティブ曲強調 */
+        .track-active {
+            border: 1.5px solid var(--accent-green) !important;
+            background: rgba(21, 128, 61, 0.04) !important;
+            box-shadow: 0 4px 15px rgba(21, 128, 61, 0.06);
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* タイピングエフェクトのカーソル */
+        .cursor-effect::after {
+            content: '|';
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink {
+            from, to { color: transparent }
+            50% { color: var(--accent-green) }
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #d4d4d8; border-radius: 10px; }
+    </style>
+</head>
+<body class="min-h-screen pb-16">
+
+    <div class="max-w-xl mx-auto px-4 py-6 md:py-10">
+        
+        <!-- ヘッダーエリア -->
+        <header class="text-center mb-5 fade-in">
+            <div class="inline-flex items-center space-x-2 bg-green-50 border border-green-100 px-3.5 py-1.5 rounded-full mb-3 shadow-sm">
+                <span class="relative flex h-2 w-2">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-green-600"></span>
+                </span>
+                <span class="text-[11px] font-bold text-green-700 tracking-[0.2em] uppercase">HOMETOWN MUSIC GALLERY</span>
+            </div>
+            
+            <div class="space-y-1.5">
+                <p class="text-[11px] md:text-[12px] tracking-[0.15em] md:tracking-[0.2em] font-extrabold text-zinc-500 uppercase leading-relaxed">
+                    ふるさとを離れて暮らす人へ　心に響く懐かしい音
+                </p>
+                <h1 class="text-2xl md:text-3xl text-zinc-800 title-serif py-1 leading-snug">
+                    ふるさとの友よ 音楽館
+                </h1>
+                <p class="text-[11px] text-zinc-400 tracking-wider">～懐かしい風景と大切な人を想う音楽の記憶～</p>
+            </div>
+        </header>
+
+        <!-- ふるさとを想う案内カード -->
+        <div class="welcome-card rounded-2xl p-4.5 mb-5 fade-in border border-amber-200">
+            <div class="space-y-2.5">
+                <div class="flex items-center space-x-2">
+                    <div class="w-7 h-7 rounded-lg bg-amber-500 flex items-center justify-center text-white shrink-0 shadow-xs">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M18 3a1 1 0 00-1.196-.98l-10 2A1 1 0 006 5v9.114A4.369 4.369 0 005 14c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3V7.82l8-1.6V11.114A4.369 4.369 0 0015 11c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3V3z" />
+                        </svg>
+                    </div>
+                    <h2 class="text-[14px] md:text-[15px] font-extrabold text-amber-900 leading-snug">
+                        🎵 🌸 ふるさとを想うオリジナル音楽集
+                    </h2>
+                </div>
+                <p class="text-[13px] text-amber-800/90 leading-relaxed font-semibold text-justify">
+                    ふるさとの青い空、山や川、季節の風、懐かしい家並み。<br><br>
+                    そして、共に過ごした家族や友人たち。<br>
+                    この音楽館では、ふるさとを離れて暮らす人の心に寄り添う、さまざまなオリジナル曲をお届けします。懐かしい風景や大切な人を思い浮かべながら、どうぞゆっくりと音楽をお楽しみください。
+                </p>
+            </div>
+            
+            <div class="mt-3.5 pt-3 border-t border-dashed border-amber-200 text-[12px] text-amber-800/90 flex items-start space-x-1.5">
+                <span class="inline-flex shrink-0 w-4 h-4 rounded-full bg-amber-100 text-amber-800 items-center justify-center font-bold text-[10px] mt-0.5">i</span>
+                <p class="leading-relaxed font-semibold">
+                    <strong class="text-amber-900">【聴き方】</strong> 下の曲リストからお好きな曲を直接タップしていただくと、思い出の写真と音楽プレイヤーが表示され、試聴が始まります。
+                </p>
+            </div>
+        </div>
+
+
+        <!-- 楽曲選択時に出現する「画像 ＆ 音声プレイヤー」カード -->
+        <div id="player-display-card" class="glass-card rounded-2xl p-4.5 mb-5 relative overflow-hidden transition-all duration-500 hidden border-2 border-green-600/30">
+            
+            <!-- 曲名・ジャンルヘッダー -->
+            <div class="flex items-center justify-between mb-3 border-b border-zinc-200/80 pb-2.5">
+                <div class="truncate">
+                    <span class="text-[10px] font-black text-green-700 tracking-widest uppercase block mb-0.5" id="playing-genre">MEMORIES</span>
+                    <h3 id="playing-title" class="text-base font-extrabold text-zinc-800 truncate">曲名</h3>
+                </div>
+                <span class="inline-flex items-center space-x-1 px-2.5 py-1 rounded-full bg-green-100 text-green-800 text-[11px] font-bold shrink-0">
+                    <span class="w-2 h-2 rounded-full bg-green-600 animate-pulse"></span>
+                    <span>再生中</span>
+                </span>
+            </div>
+
+            <!-- 選択された曲の大きな「思い出の写真」表示部分 -->
+            <div class="relative rounded-xl overflow-hidden border border-zinc-200/80 shadow-md bg-zinc-100 h-56 md:h-64 mb-4">
+                <img id="player-photo" src="" alt="思い出の情景" class="w-full h-full object-cover">
+                <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent p-3.5">
+                    <p id="player-photo-caption" class="text-[12px] text-white font-bold tracking-wider leading-relaxed drop-shadow-sm"></p>
+                </div>
+            </div>
+
+            <!-- 音声プレイヤー -->
+            <div class="space-y-2">
+                <audio id="main-audio" controls autoplay class="w-full h-12 rounded-lg focus:outline-none shadow-sm">
+                    お使いのブラウザは音声再生に対応していません。
+                </audio>
+            </div>
+        </div>
+
+        <!-- AI解析解説パネル -->
+        <div id="ai-insight-panel" class="glass-card rounded-2xl p-5 mb-5 border border-green-100 relative overflow-hidden bg-gradient-to-br from-white via-green-50/20 to-white">
+            <div class="flex items-center space-x-2 mb-3">
+                <span class="inline-block w-2 h-2 rounded-full bg-green-600 animate-pulse"></span>
+                <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-green-700">MEMORIES ANALYSIS (あの頃の風景解析)</span>
+            </div>
+            
+            <div class="flex flex-wrap gap-2 mb-3 font-mono text-[11px] text-zinc-600 font-semibold">
+                <span class="bg-green-100/60 border border-green-200/60 px-2.5 py-0.5 rounded-md text-green-800 font-bold" id="ai-stat-tempo">TEMPO: -- BPM</span>
+                <span class="bg-green-100/60 border border-green-200/60 px-2.5 py-0.5 rounded-md text-green-800 font-bold" id="ai-stat-passion">NOSTALGIA: --%</span>
+                <span class="bg-green-100/60 border border-green-200/60 px-2.5 py-0.5 rounded-md text-green-800 font-bold" id="ai-stat-feeling">SCENE: UNKNOWN</span>
+            </div>
+            <p id="ai-insight-text" class="text-xs md:text-sm leading-relaxed font-bold text-zinc-700 cursor-effect">下の楽曲を選択すると、写真・プレイヤーと共に南相木村の懐かしい情景解説が始動します。</p>
+        </div>
+
+        <!-- トラックリスト -->
+        <div class="space-y-3 mb-5">
+            <h3 class="text-xs font-bold text-zinc-500 uppercase tracking-[0.2em]">ふるさとの思い出トラック (全11曲)</h3>
+            <div class="space-y-2.5" id="playlist">
+                <!-- JavaScriptで楽曲リストを生成 -->
+            </div>
+        </div>
+
+        <!-- ふるさと解説エリア -->
+        <div class="glass-card rounded-2xl p-5 mb-5">
+            <section class="mb-4">
+                <h2 class="text-[11px] font-bold text-green-700 uppercase tracking-[0.2em] mb-1.5">Our Beloved Hometown</h2>
+                <h3 class="text-base font-bold text-zinc-800 mb-2">ふるさと、信州・南相木村に想いを寄せて</h3>
+                <p class="text-[13px] text-zinc-600 leading-relaxed font-medium">
+                    この音楽館は、昭和40年に南相木中を卒業し、故郷を離れてから60年以上が経った同級生の皆さまをはじめ、ふるさとを離れて暮らすすべての方へ向けて企画されました。毎日見上げた凛々しい「御座山」、水しぶきを上げた「おみかの滝」や「犬ころの滝」、初夏に赤く染まった「立原高原」、そして静かな「立岩湖」……。目を閉じて音を聴けば、あの澄み切った信州の風が、友と共に過ごした懐かしい日々が、いつでも鮮やかに心に蘇ります。
+                </p>
+            </section>
+            
+            <hr class="border-zinc-200 my-4">
+
+            <!-- 南相木の自然美カテゴリー -->
+            <section>
+                <div class="flex items-center justify-between mb-3">
+                    <h2 class="text-[11px] font-bold text-zinc-400 uppercase tracking-[0.25em]">Hometown Landmarks</h2>
+                    <span class="text-[11px] text-green-600 font-bold">8 Beautiful Spots</span>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div class="p-2.5 bg-white/50 rounded-xl border border-zinc-200/40">
+                        <h4 class="text-xs font-bold text-green-800 mb-0.5">御座山 (おぐらさん)</h4>
+                        <p class="text-[11px] text-zinc-500 leading-snug">南相木のシンボル。どこからでも見える優美な頂きは、私たちの誇り。</p>
+                    </div>
+                    <div class="p-2.5 bg-white/50 rounded-xl border border-zinc-200/40">
+                        <h4 class="text-xs font-bold text-green-800 mb-0.5">おみかの滝</h4>
+                        <p class="text-[11px] text-zinc-500 leading-snug">3つの滝壺からなる名勝。激しくも厳かな流れは今も変わりません。</p>
+                    </div>
+                    <div class="p-2.5 bg-white/50 rounded-xl border border-zinc-200/40">
+                        <h4 class="text-xs font-bold text-green-800 mb-0.5">立原高原</h4>
+                        <p class="text-[11px] text-zinc-500 leading-snug">白樺とカラマツの林。初夏には２万株のレンゲツツジが赤く咲き誇ります。</p>
+                    </div>
+                    <div class="p-2.5 bg-white/50 rounded-xl border border-zinc-200/40">
+                        <h4 class="text-xs font-bold text-green-800 mb-0.5">八月一日の祈り (戌の満水)</h4>
+                        <p class="text-[11px] text-zinc-500 leading-snug">寛保の大水害を供養し、先人やご先祖様へ感謝を捧げる佐久地域特別な風習。</p>
+                    </div>
+                    <div class="p-2.5 bg-white/50 rounded-xl border border-zinc-200/40">
+                        <h4 class="text-xs font-bold text-green-800 mb-0.5">立岩湖 (たていわこ)</h4>
+                        <p class="text-[11px] text-zinc-500 leading-snug">シナノユキマスが泳ぐ、山懐に抱かれた静かな静寂の湖面。</p>
+                    </div>
+                    <div class="p-2.5 bg-white/50 rounded-xl border border-zinc-200/40">
+                        <h4 class="text-xs font-bold text-green-800 mb-0.5">昭和の木造校舎</h4>
+                        <p class="text-[11px] text-zinc-500 leading-snug">ストーブの匂い、廊下のきしむ音、放課後に響いたみんなの笑い声。</p>
+                    </div>
+                    <div class="p-2.5 bg-white/50 rounded-xl border border-zinc-200/40 col-span-2">
+                        <h4 class="text-xs font-bold text-green-800 mb-0.5">犬ころの滝 ＆ 滝見の湯</h4>
+                        <p class="text-[11px] text-zinc-500 leading-snug">苔むした岩場を流れ落ちる美しい滝と、今では名物となった温泉のせせらぎ。南相木の豊かな水が育む癒しの光景です。</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- キュレーター紹介 -->
+        <div class="glass-card rounded-2xl p-6 text-center">
+            <p class="text-[11px] text-green-600 uppercase tracking-[0.3em] mb-4 font-bold">Authorized Curator</p>
+            
+            <div class="relative w-20 h-20 mx-auto mb-3 rounded-full p-0.5 bg-gradient-to-tr from-green-600 to-lime-500 shadow-md">
+                <div class="w-full h-full rounded-full overflow-hidden bg-white flex items-center justify-center">
+                    <img id="curator-image" src="./aikon-sita1.png" alt="中島 義健" class="w-full h-full object-cover" onerror="this.onerror=null; this.parentNode.innerHTML='<svg class=\'w-8 h-8 text-green-600\' fill=\'currentColor\' viewBox=\'0 0 24 24\'><path d=\'M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z\'/></svg>'">
+                </div>
+            </div>
+
+            <h4 class="text-base font-bold text-zinc-800">中島 義健</h4>
+            <p class="text-xs text-green-700 font-bold mb-3">AI音楽解析・南相木文化アーカイブ担当</p>
+            <a href="mailto:yoshi0213@gmail.com" class="text-xs text-zinc-600 font-mono bg-zinc-100 hover:bg-green-50 hover:text-green-700 py-1.5 px-4 rounded-xl inline-block border border-zinc-200/80 transition-all">
+                yoshi0213@gmail.com
+            </a>
+        </div>
+
+        <!-- フッター -->
+        <footer class="mt-12 text-center text-zinc-400 text-[10px] tracking-[0.4em] uppercase font-bold">
+            &copy; 2024-2026 Minamiaiki Middle School Alumni Memory Project
+        </footer>
+    </div>
+
+    <!-- JavaScript ロジック -->
+    <script>
+        const tracks = [
+            {
+                title: "ふるさとの友よ",
+                genre: "同窓の絆 • 望郷歌",
+                file: "./hurusatono_tomoyo.mp3",
+                image: "./omoide_1.jpg", 
+                imageCaption: "ふるさとの友よ - 懐かしき学舎と変わらぬ同級生たちの弾ける笑顔",
+                tempo: 76,
+                passion: 99,
+                feeling: "同級生・学び舎",
+                insight: "60年の歳月を超えて心で繋がる同級生たちへの想いを綴った温かい名曲。イントロが流れた瞬間、あの日と同じ友の笑顔と木造校舎が鮮やかに蘇ります。"
+            },
+            {
+                title: "ふたりの歩いた道",
+                genre: "夫婦の絆 • 人生の歩み",
+                file: "./music_hutaride_aruitamichi.mp3",
+                image: null,
+                imageCaption: "ふたりの歩いた道 - 長い歳月を共に支え合い歩んできたかけがえのない人生の記憶",
+                tempo: 74,
+                passion: 95,
+                feeling: "歩んだ道・絆",
+                insight: "長い歳月を共に支え合い、共に歩んできたふたりの足跡。山あり谷ありの人生を振り返りながら、感謝と温かい愛で胸を満たしてくれる深い絆の物語。"
+            },
+            {
+                title: "夫婦の道",
+                genre: "感謝と絆 • 人生歌",
+                file: "./music_huhu_no_michi.mp3",
+                image: null,
+                imageCaption: "夫婦の道 - 共に苦楽を分かち合い寄り添いながら歩んできた感謝の軌跡",
+                tempo: 78,
+                passion: 96,
+                feeling: "夫婦の絆・感謝",
+                insight: "喜びも苦しみも分かち合い、寄り添いながら歩んできた夫婦の軌跡。言葉にしきれない「ありがとう」の想いを、優しく味わい深い旋律に乗せて贈る名曲。"
+            },
+            {
+                title: "高原列車小海線",
+                genre: "旅情のひびき",
+                file: "./kougen_resya_koumisen.mp3",
+                image: "./kougen_resya_koumisen.png", 
+                imageCaption: "高原列車小海線 - 八ヶ岳高原をのんびりと走る懐かしのディーゼル車と澄み切った青空",
+                tempo: 110,
+                passion: 92,
+                feeling: "小海線・汽笛",
+                insight: "高原をコトコトと走る小海線の軽快なリズム。窓を開けて吸い込んだ澄み切った信州の風、車窓から仰ぎ見た雄大な八ヶ岳の稜線が胸を熱くさせます。"
+            },
+            {
+                title: "南相木慕情",
+                genre: "郷愁のバラード",
+                file: "./minamiaiki_bojyou.mp3",
+                image: "./minamiaiki_bojyo.png", 
+                imageCaption: "南相木慕情 - 御座山の夕暮れに赤く染まりゆく南相木村の美しい里山と静謐なひととき",
+                tempo: 68,
+                passion: 98,
+                feeling: "御座山・夕暮れ",
+                insight: "夕暮れ時に美しく茜色に染まる御座山と、しっとり響くせせらぎ。南相木の豊かな大地で過ごした青春の日々への愛おしさを、深いメロディーが包み込みます。"
+            },
+            {
+                title: "八ヶ岳しぐれ",
+                genre: "高原の哀愁歌",
+                file: "./yatugatake_shigure.mp3",
+                image: "./yatugatake_shigure.png", 
+                imageCaption: "八ヶ岳しぐれ - 八ヶ岳の山肌を優しく濡らす通り雨と、静かに立ち込める幻想的な川霧",
+                tempo: 82,
+                passion: 95,
+                feeling: "八ヶ岳・通り雨",
+                insight: "八ヶ岳の峰々を優しく濡らすしぐれ雨。静寂に包まれる高原の森に、情感あふれる旋律がしみわたり、遠い日の甘酸っぱく切ない記憶を呼び起こします。"
+            },
+            {
+                title: "立原高原",
+                genre: "初夏のささやき",
+                file: "./tatehara_kougen.mp3",
+                image: "./tatehara_kougen.png",
+                imageCaption: "立原高原 - カラマツ林を鮮やかに染め上げる2万株のレンゲツツジと美しい白樺林",
+                tempo: 90,
+                passion: 89,
+                feeling: "レンゲツツジ・白樺",
+                insight: "初夏になると白樺やカラマツの林を真っ赤に染め上げるレンゲツツジの群生。爽やかな高原のアコーディオンを連想させる軽やかなメロディーが、あの日の遊歩道を歩いているような高揚感を連れてきます。"
+            },
+            {
+                title: "白駒の池",
+                genre: "神秘の静寂",
+                file: "./music_sirakoma_ike.mp3",
+                image: "./shirakoma_ike.png",
+                imageCaption: "白駒の池 - 北八ヶ岳の原生林に抱かれた澄みわたる湖面と神秘的な苔の森",
+                tempo: 72,
+                passion: 93,
+                feeling: "原生林・静寂の湖",
+                insight: "北八ヶ岳の標高2,100mを超える高地にひっそりと佇む白駒の池。深い苔の森と緑豊かな原生林に包まれた澄んだ水面が、静けさの中に美しいふるさとの気品を感じさせてくれます。"
+            },
+            {
+                title: "早春の駅",
+                genre: "旅立ち • 早春の思い出",
+                file: "./music_soushun_eki.mp3",
+                image: "./soushun_eki.png",
+                imageCaption: "早春の駅 - まだ残雪の残る早春のホーム、未来へ向けて夢を乗せて発車した懐かしの駅舎とプラットホーム",
+                tempo: 84,
+                passion: 97,
+                feeling: "旅立ち・早春の駅",
+                insight: "まだ残雪が残る早春の故郷・南相木をあとにし、それぞれの夢を胸に未来へと旅立ったあの日の「早春の駅」。木造校舎で過ごしたかけがえのない友との別れと旅立ちの決意を、温かい旋律がそっと包み込みます。"
+            },
+            {
+                title: "八月一日の祈り",
+                genre: "郷土の記憶 • 祈りの鎮魂歌",
+                file: "./music_hatigatu_ichinichi_inori.mp3",
+                image: "./inuno_mansui_3.png",
+                imageCaption: "八月一日の祈り - 寛保の大水害「戌の満水」の記憶を語り継ぎ、ご先祖様と先人へ祈りを捧げる佐久地域の特別なひととき",
+                tempo: 70,
+                passion: 98,
+                feeling: "戌の満水・8月1日の墓参り",
+                insight: "寛保二年（1742年）の千曲川大洪水「戌の満水」から280年以上語り継がれる佐久地域独特の8月1日のお墓参り。犠牲となった先人への供養と命の尊さを胸に刻み、静かに祈りを捧げる旋律が心に深く染みわたります。"
+            },
+            {
+                title: "寄り添う光と、君の笑顔",
+                genre: "追悼の詩 • 永遠の友情",
+                file: "./music_katumi_tuitono_uta.mp3",
+                image: "./tomo_katumi.png",
+                imageCaption: "寄り添う光と、君の笑顔 - 同級会から2週間足らずで亡くなった克己君を偲んで",
+                tempo: 72,
+                passion: 99,
+                feeling: "克己君への思慕・追悼",
+                insight: "同級会で再び語り合えた喜びと、そのわずか2週間足らずで急逝された克己君への思慕。語りかけてくれるような温かい旋律と、心の中に永遠に輝く笑顔をそっと包み込む追悼のメッセージ。"
+            }
+        ];
+
+        let activeTrackIndex = null;
+        let typingTimeout = null;
+
+        const playerDisplayCard = document.getElementById('player-display-card');
+        const playerPhoto = document.getElementById('player-photo');
+        const playerPhotoCaption = document.getElementById('player-photo-caption');
+        const mainAudio = document.getElementById('main-audio');
+        const playingTitle = document.getElementById('playing-title');
+        const playingGenre = document.getElementById('playing-genre');
+        const playlistContainer = document.getElementById('playlist');
+
+        // プレイリストの動的生成
+        tracks.forEach((track, idx) => {
+            const el = document.createElement('div');
+            el.id = `track-${idx}`;
+            el.className = "group cursor-pointer p-3.5 rounded-xl border border-zinc-200 bg-white/80 hover:border-green-400 hover:bg-green-50/50 active:scale-[0.99] transition-all duration-200 flex items-center justify-between shadow-xs";
+            el.onclick = () => selectTrack(idx);
+            
+            const jacketHtml = track.image 
+                ? `<div class="w-11 h-11 rounded-full overflow-hidden shrink-0 shadow-sm border border-zinc-100 transition-all group-hover:scale-105">
+                     <img src="${track.image}" alt="" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/44x44/f4f4f5/15803d?text=${encodeURIComponent(track.title.substring(0,2))}'">
+                   </div>`
+                : `<div class="w-11 h-11 rounded-full bg-green-100 text-green-800 flex items-center justify-center text-xs font-bold shrink-0 shadow-sm border border-zinc-100">
+                     <span>${track.feeling.substring(0, 2)}</span>
+                   </div>`;
+
+            el.innerHTML = `
+                <div class="flex items-center space-x-3.5 truncate">
+                    ${jacketHtml}
+                    <div class="truncate">
+                        <h4 class="text-sm font-bold text-zinc-800 group-hover:text-green-700 transition-colors">${track.title}</h4>
+                        <p class="text-[11.5px] text-zinc-500 font-semibold tracking-wide mt-0.5">${track.genre}</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-2 shrink-0">
+                    <span class="text-[11px] text-green-700 font-bold bg-green-50 border border-green-200/80 px-3 py-1 rounded-full group-hover:bg-green-600 group-hover:text-white transition-all shadow-xs">聴く</span>
+                </div>
+            `;
+            playlistContainer.appendChild(el);
+        });
+
+        // 楽曲選択時の処理
+        function selectTrack(index) {
+            activeTrackIndex = index;
+            const track = tracks[index];
+
+            // プレイヤーカードを表示
+            playerDisplayCard.classList.remove('hidden');
+            playerDisplayCard.classList.add('fade-in');
+
+            // プレイリストのアクティブ枠更新
+            document.querySelectorAll('#playlist > div').forEach((el) => {
+                el.classList.remove('track-active');
+            });
+            const activeEl = document.getElementById(`track-${index}`);
+            if (activeEl) {
+                activeEl.classList.add('track-active');
+            }
+
+            // 画像とキャプションの設定
+            playerPhoto.src = track.image;
+            playerPhotoCaption.innerText = track.imageCaption || `【思い出の情景】${track.title}`;
+
+            // 曲情報の設定とオーディオの再生
+            playingTitle.innerText = track.title;
+            playingGenre.innerText = `MEMORIES: ${track.genre}`;
+            mainAudio.src = track.file;
+            
+            mainAudio.play().catch(err => {
+                console.log("自動再生が制限されたため、プレイヤーから直接再生ボタンを押してください。");
+            });
+
+            // プレイヤー位置へスムーズスクロール
+            playerDisplayCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+            // AI Insight パネルの更新
+            updateAIConsole(track);
+        }
+
+        function updateAIConsole(track) {
+            document.getElementById('ai-stat-tempo').innerText = `TEMPO: ${track.tempo} BPM`;
+            document.getElementById('ai-stat-passion').innerText = `NOSTALGIA: ${track.passion}%`;
+            document.getElementById('ai-stat-feeling').innerText = `SCENE: ${track.feeling}`;
+
+            const textElement = document.getElementById('ai-insight-text');
+            textElement.innerText = "";
+            clearTimeout(typingTimeout);
+
+            let charIdx = 0;
+            const fullText = track.insight;
+            
+            function typeChar() {
+                if (charIdx < fullText.length) {
+                    textElement.innerText += fullText.charAt(charIdx);
+                    charIdx++;
+                    typingTimeout = setTimeout(typeChar, 30);
+                }
+            }
+            typeChar();
+        }
+    </script>
+</body>
+</html>
