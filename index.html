@@ -132,13 +132,6 @@
                 この音楽館では、ふるさとを離れて暮らす人の心に寄り添う、さまざまなオリジナル曲をお届けします。懐かしい風景や大切な人を思い浮かべながら、どうぞゆっくりと音楽をお楽しみください。
             </p>
         </div>
-        
-        <div class="mt-4 pt-3.5 border-t border-dashed border-amber-200/90 text-[12px] text-amber-800/90 flex items-start space-x-2 px-0.5">
-            <span class="inline-flex shrink-0 w-4 h-4 rounded-full bg-amber-100 text-amber-800 items-center justify-center font-bold text-[10px] mt-0.5">i</span>
-            <p class="leading-relaxed font-semibold">
-                <strong class="text-amber-900">【聴き方】</strong> 下の曲リストからお好きな曲を直接タップしていただくと、思い出の写真と音楽プレイヤーが表示され、音楽をお楽しみいただけます。
-            </p>
-        </div>
     </div>
 
 
@@ -175,22 +168,12 @@
 
         <!-- AI解析解説パネル -->
         <div id="ai-insight-panel" class="glass-card rounded-2xl p-5 mb-5 border border-green-100 relative overflow-hidden bg-gradient-to-br from-white via-green-50/20 to-white">
-            <div class="flex items-center space-x-2 mb-3">
-                <span class="inline-block w-2 h-2 rounded-full bg-green-600 animate-pulse"></span>
-                <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-green-700">MEMORIES ANALYSIS (あの頃の風景解析)</span>
-            </div>
-            
-            <div class="flex flex-wrap gap-2 mb-3 font-mono text-[11px] text-zinc-600 font-semibold">
-                <span class="bg-green-100/60 border border-green-200/60 px-2.5 py-0.5 rounded-md text-green-800 font-bold" id="ai-stat-tempo">TEMPO: -- BPM</span>
-                <span class="bg-green-100/60 border border-green-200/60 px-2.5 py-0.5 rounded-md text-green-800 font-bold" id="ai-stat-passion">NOSTALGIA: --%</span>
-                <span class="bg-green-100/60 border border-green-200/60 px-2.5 py-0.5 rounded-md text-green-800 font-bold" id="ai-stat-feeling">SCENE: UNKNOWN</span>
-            </div>
             <p id="ai-insight-text" class="text-xs md:text-sm leading-relaxed font-bold text-zinc-700 cursor-effect">下の楽曲を選択すると、写真・プレイヤーと共に南相木村の懐かしい情景解説が始動します。</p>
         </div>
 
         <!-- トラックリスト -->
         <div class="space-y-3 mb-5">
-            <h3 class="text-xs font-bold text-zinc-500 uppercase tracking-[0.2em]">ふるさとの思い出トラック (全13曲)</h3>
+            <h3 class="text-xs font-bold text-zinc-500 uppercase tracking-[0.2em]">ふるさとの思い出トラック (全14曲)</h3>
             <div class="space-y-2.5" id="playlist">
                 <!-- JavaScriptで楽曲リストを生成 -->
             </div>
@@ -320,6 +303,17 @@
                 passion: 99,
                 feeling: "同級生・学び舎",
                 insight: "60年の歳月を超えて心で繋がる同級生たちへの想いを綴った温かい名曲。イントロが流れた瞬間、あの日と同じ友の笑顔と木造校舎が鮮やかに蘇ります。"
+            },
+            {
+                title: "ふるさとの調べ",
+                genre: "郷愁の旋律 • ふるさとの想い",
+                file: "./musik_hurusato_no_shirabe.mp3",
+                image: "./gazo_hurusato_1.jpg",
+                imageCaption: "ふるさとの調べ - 心を満たす懐かしい故郷の風景と柔らかな風の調べ",
+                tempo: 76,
+                passion: 98,
+                feeling: "故郷の風景・郷愁",
+                insight: "懐かしい山並みや川のせせらぎ、風の音とともに、遠い日の思い出が静かに胸へと広がっていく心温まる旋律です。"
             },
             {
                 title: "また帰っておいで 〜お盆の灯り〜",
@@ -535,9 +529,12 @@
         }
 
         function updateAIConsole(track) {
-            document.getElementById('ai-stat-tempo').innerText = `TEMPO: ${track.tempo} BPM`;
-            document.getElementById('ai-stat-passion').innerText = `NOSTALGIA: ${track.passion}%`;
-            document.getElementById('ai-stat-feeling').innerText = `SCENE: ${track.feeling}`;
+            const tempoEl = document.getElementById('ai-stat-tempo');
+            if (tempoEl) tempoEl.innerText = `TEMPO: ${track.tempo} BPM`;
+            const passionEl = document.getElementById('ai-stat-passion');
+            if (passionEl) passionEl.innerText = `NOSTALGIA: ${track.passion}%`;
+            const feelingEl = document.getElementById('ai-stat-feeling');
+            if (feelingEl) feelingEl.innerText = `SCENE: ${track.feeling}`;
 
             const textElement = document.getElementById('ai-insight-text');
             textElement.innerText = "";
